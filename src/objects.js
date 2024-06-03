@@ -1762,7 +1762,7 @@ SpriteMorph.prototype.repeatingList = function(item, amount) {
 
 SpriteMorph.prototype.questionDialog = null;
 SpriteMorph.prototype.lastResult = '';
-SpriteMorph.prototype.lastResultExists = false;
+SpriteMorph.prototype.lastResultExists = 0;
 
 SpriteMorph.prototype.promptCreateBlock = function() {
     this.makeBlock();
@@ -1795,50 +1795,57 @@ SpriteMorph.prototype.lastPromptAnswer = function() {
     return this.lastResult;
 };
 SpriteMorph.prototype.hasLastPromptAnswer = function() {
-    return this.lastResultExists;
+    switch (this.lastResultExists) {
+        case 0:
+            return 'no result';
+        case 1:
+            return 'canceled';
+        case 2:
+            return 'result exists';
+    }
 }
 SpriteMorph.prototype.doPromptYesOrNo = function(title, body) {
     this.questionDialog = new DialogBoxMorph();
     this.lastResult = '';
-    this.lastResultExists = false;
+    this.lastResultExists = 0;
     this.questionDialog.promptYesNo(title, body, world, null, function(popup, callingObject) {
         callingObject.lastResult = true;
-        callingObject.lastResultExists = true;
+        callingObject.lastResultExists = 2;
         popup.destroy();
         
     }, function(popup, callingObject) {
         callingObject.lastResult = false;
-        callingObject.lastResultExists = true;
+        callingObject.lastResultExists = 2;
         popup.destroy();
     }, this);
 };
 SpriteMorph.prototype.doPromptYesOrNoCustomButtons = function(title, body, yesLabel, noLabel) {
     this.questionDialog = new DialogBoxMorph();
     this.lastResult = '';
-    this.lastResultExists = false;
+    this.lastResultExists = 0;
     this.questionDialog.promptYesNoWithCustomButtons(title, body, world, null, function(popup, callingObject) {
         callingObject.lastResult = true;
-        callingObject.lastResultExists = true;
+        callingObject.lastResultExists = 2;
         popup.destroy();
         
     }, yesLabel, function(popup, callingObject) {
         callingObject.lastResult = false;
-        callingObject.lastResultExists = true;
+        callingObject.lastResultExists = 2;
         popup.destroy();
     }, noLabel, this);
 };
 SpriteMorph.prototype.doPromptText = function(title, body) {
     this.questionDialog = new DialogBoxMorph();
     this.lastResult = '';
-    this.lastResultExists = false;
+    this.lastResultExists = 0;
     this.questionDialog.blockPrompt(title, body, world, null, function(popup, callingObject, content) {
         callingObject.lastResult = content;
-        callingObject.lastResultExists = true;
+        callingObject.lastResultExists = 2;
         popup.destroy();
         
     }, function(popup, callingObject) {
         callingObject.lastResult = '';
-        callingObject.lastResultExists = false;
+        callingObject.lastResultExists = 1;
         popup.destroy();
     }, this);
 };

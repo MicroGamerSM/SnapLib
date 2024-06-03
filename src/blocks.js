@@ -315,6 +315,15 @@ SyntaxElementMorph.prototype.labelParts = {
         react: selector
         value: string, number or Array for localized strings / constants
     */
+   '%lastResultType': {
+    type: 'input',
+    tags: 'read-only static landscape',
+    menu: {
+        'no result': 'no result',
+        'canceled': 'canceled',
+        'result exists': 'result exists'
+    }
+   },
    '%blockFilter' : {
         type: 'input',
         tags: 'read-only static landscape',
